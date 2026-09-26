@@ -14,7 +14,327 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analyses: {
+        Row: {
+          commodity_category: string | null
+          commodity_name: string
+          created_at: string
+          id: string
+          inputs: Json
+          storage_type: string
+          user_id: string
+        }
+        Insert: {
+          commodity_category?: string | null
+          commodity_name: string
+          created_at?: string
+          id?: string
+          inputs?: Json
+          storage_type: string
+          user_id: string
+        }
+        Update: {
+          commodity_category?: string | null
+          commodity_name?: string
+          created_at?: string
+          id?: string
+          inputs?: Json
+          storage_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      analysis_material_scores: {
+        Row: {
+          analysis_id: string
+          breakdown: Json
+          created_at: string
+          id: string
+          material_name: string
+          material_slug: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          analysis_id: string
+          breakdown?: Json
+          created_at?: string
+          id?: string
+          material_name: string
+          material_slug: string
+          score: number
+          user_id: string
+        }
+        Update: {
+          analysis_id?: string
+          breakdown?: Json
+          created_at?: string
+          id?: string
+          material_name?: string
+          material_slug?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_material_scores_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      commodities: {
+        Row: {
+          category: string
+          created_at: string
+          default_moisture: number | null
+          default_oil: number | null
+          default_ph: number | null
+          default_respiration: string | null
+          fresh_produce: boolean
+          id: string
+          moisture_sensitivity: string
+          name: string
+          perishability: string
+          respiration_category: string
+          typical_storage: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          default_moisture?: number | null
+          default_oil?: number | null
+          default_ph?: number | null
+          default_respiration?: string | null
+          fresh_produce?: boolean
+          id?: string
+          moisture_sensitivity: string
+          name: string
+          perishability: string
+          respiration_category: string
+          typical_storage: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          default_moisture?: number | null
+          default_oil?: number | null
+          default_ph?: number | null
+          default_respiration?: string | null
+          fresh_produce?: boolean
+          id?: string
+          moisture_sensitivity?: string
+          name?: string
+          perishability?: string
+          respiration_category?: string
+          typical_storage?: string
+        }
+        Relationships: []
+      }
+      materials: {
+        Row: {
+          category: string
+          cost_index: number
+          created_at: string
+          data_status: string
+          description: string
+          fresh_produce_suitable: boolean
+          id: string
+          light_barrier: number
+          map_suitable: boolean
+          mechanical_strength: number
+          moisture_barrier: number
+          name: string
+          otr_label: string
+          otr_value: number
+          oxygen_barrier: number
+          recyclability: string
+          relative_cost: number
+          sealability: number
+          slug: string
+          sustainability: number
+          temp_max: number
+          temp_min: number
+          thickness_range: string
+          wvtr_label: string
+          wvtr_value: number
+        }
+        Insert: {
+          category: string
+          cost_index: number
+          created_at?: string
+          data_status?: string
+          description: string
+          fresh_produce_suitable?: boolean
+          id?: string
+          light_barrier: number
+          map_suitable?: boolean
+          mechanical_strength: number
+          moisture_barrier: number
+          name: string
+          otr_label: string
+          otr_value: number
+          oxygen_barrier: number
+          recyclability: string
+          relative_cost: number
+          sealability: number
+          slug: string
+          sustainability: number
+          temp_max: number
+          temp_min: number
+          thickness_range: string
+          wvtr_label: string
+          wvtr_value: number
+        }
+        Update: {
+          category?: string
+          cost_index?: number
+          created_at?: string
+          data_status?: string
+          description?: string
+          fresh_produce_suitable?: boolean
+          id?: string
+          light_barrier?: number
+          map_suitable?: boolean
+          mechanical_strength?: number
+          moisture_barrier?: number
+          name?: string
+          otr_label?: string
+          otr_value?: number
+          oxygen_barrier?: number
+          recyclability?: string
+          relative_cost?: number
+          sealability?: number
+          slug?: string
+          sustainability?: number
+          temp_max?: number
+          temp_min?: number
+          thickness_range?: string
+          wvtr_label?: string
+          wvtr_value?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string | null
+          organization: string | null
+          role: string | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          name?: string | null
+          organization?: string | null
+          role?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string | null
+          organization?: string | null
+          role?: string | null
+        }
+        Relationships: []
+      }
+      recommendations: {
+        Row: {
+          alternatives: Json
+          analysis_id: string
+          compatibility: number
+          created_at: string
+          factors: Json
+          id: string
+          map_conditions: Json
+          material_name: string
+          material_slug: string
+          reasons: Json
+          shelf_life_max: number
+          shelf_life_min: number
+          specifications: Json
+          user_id: string
+        }
+        Insert: {
+          alternatives?: Json
+          analysis_id: string
+          compatibility: number
+          created_at?: string
+          factors?: Json
+          id?: string
+          map_conditions?: Json
+          material_name: string
+          material_slug: string
+          reasons?: Json
+          shelf_life_max: number
+          shelf_life_min: number
+          specifications?: Json
+          user_id: string
+        }
+        Update: {
+          alternatives?: Json
+          analysis_id?: string
+          compatibility?: number
+          created_at?: string
+          factors?: Json
+          id?: string
+          map_conditions?: Json
+          material_name?: string
+          material_slug?: string
+          reasons?: Json
+          shelf_life_max?: number
+          shelf_life_min?: number
+          specifications?: Json
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendations_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          analysis_id: string
+          content: Json
+          created_at: string
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          analysis_id: string
+          content?: Json
+          created_at?: string
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          analysis_id?: string
+          content?: Json
+          created_at?: string
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
