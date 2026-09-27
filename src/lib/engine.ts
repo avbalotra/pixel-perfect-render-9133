@@ -157,10 +157,10 @@ export function scoreMaterial(material: Material, input: AnalysisInput, req: Req
   };
 
   if (input.freshProduce && req.permeability >= 4 && !material.fresh_produce_suitable) {
-    breakdown.moisture *= 0.8;
+    breakdown['moisture'] = (breakdown['moisture'] ?? 0) * 0.8;
   }
   if (input.storageType === "Frozen" && material.temp_min > -18) {
-    breakdown.temperature = Math.min(breakdown.temperature, 0.3);
+    breakdown['temperature'] = Math.min(breakdown['temperature'] ?? 0, 0.3);
   }
 
   const raw = (Object.keys(WEIGHTS) as (keyof typeof WEIGHTS)[]).reduce(
@@ -180,7 +180,7 @@ function buildFactors(best: ScoredMaterial) {
   const total = contributions.reduce((s, c) => s + c.value, 0) || 1;
   const shares = contributions.map((c) => ({ label: c.label, share: Math.round((c.value / total) * 100) }));
   const drift = 100 - shares.reduce((s, c) => s + c.share, 0);
-  if (shares.length) shares[0].share += drift;
+  if (shares[0]) shares[0].share += drift;
   return shares.sort((a, b) => b.share - a.share);
 }
 
@@ -334,6 +334,7 @@ export function runAnalysis(input: AnalysisInput, materials: Material[]): Analys
     .map((m) => scoreMaterial(m, input, req))
     .sort((a, b) => b.score - a.score);
   const best = scored[0];
+  if (!best) throw new Error("No materials to score");
   const m = best.material;
 
   return {

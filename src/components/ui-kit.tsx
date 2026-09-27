@@ -70,9 +70,9 @@ export function CountUp({
   decimals = 0,
 }: {
   value: number;
-  suffix?: string;
-  prefix?: string;
-  decimals?: number;
+  suffix?: string | undefined;
+  prefix?: string | undefined;
+  decimals?: number | undefined;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });

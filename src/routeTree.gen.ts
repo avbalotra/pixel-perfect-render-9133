@@ -11,6 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as MaterialsRouteImport } from './routes/materials'
+import { Route as NewAnalysisRouteImport } from './routes/new-analysis'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as ResultsIdRouteImport } from './routes/results.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +28,110 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaterialsRoute = MaterialsRouteImport.update({
+  id: '/materials',
+  path: '/materials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewAnalysisRoute = NewAnalysisRouteImport.update({
+  id: '/new-analysis',
+  path: '/new-analysis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsIdRoute = ResultsIdRouteImport.update({
+  id: '/results/$id',
+  path: '/results/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/history': typeof HistoryRoute
+  '/materials': typeof MaterialsRoute
+  '/new-analysis': typeof NewAnalysisRoute
+  '/profile': typeof ProfileRoute
+  '/reports': typeof ReportsRoute
+  '/results/$id': typeof ResultsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/history': typeof HistoryRoute
+  '/materials': typeof MaterialsRoute
+  '/new-analysis': typeof NewAnalysisRoute
+  '/profile': typeof ProfileRoute
+  '/reports': typeof ReportsRoute
+  '/results/$id': typeof ResultsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/history': typeof HistoryRoute
+  '/materials': typeof MaterialsRoute
+  '/new-analysis': typeof NewAnalysisRoute
+  '/profile': typeof ProfileRoute
+  '/reports': typeof ReportsRoute
+  '/results/$id': typeof ResultsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/history'
+    | '/materials'
+    | '/new-analysis'
+    | '/profile'
+    | '/reports'
+    | '/results/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth'
-  id: '__root__' | '/' | '/auth'
+  to:
+    | '/'
+    | '/auth'
+    | '/history'
+    | '/materials'
+    | '/new-analysis'
+    | '/profile'
+    | '/reports'
+    | '/results/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/history'
+    | '/materials'
+    | '/new-analysis'
+    | '/profile'
+    | '/reports'
+    | '/results/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  HistoryRoute: typeof HistoryRoute
+  MaterialsRoute: typeof MaterialsRoute
+  NewAnalysisRoute: typeof NewAnalysisRoute
+  ProfileRoute: typeof ProfileRoute
+  ReportsRoute: typeof ReportsRoute
+  ResultsIdRoute: typeof ResultsIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +150,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/materials': {
+      id: '/materials'
+      path: '/materials'
+      fullPath: '/materials'
+      preLoaderRoute: typeof MaterialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-analysis': {
+      id: '/new-analysis'
+      path: '/new-analysis'
+      fullPath: '/new-analysis'
+      preLoaderRoute: typeof NewAnalysisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results/$id': {
+      id: '/results/$id'
+      path: '/results/$id'
+      fullPath: '/results/$id'
+      preLoaderRoute: typeof ResultsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  HistoryRoute: HistoryRoute,
+  MaterialsRoute: MaterialsRoute,
+  NewAnalysisRoute: NewAnalysisRoute,
+  ProfileRoute: ProfileRoute,
+  ReportsRoute: ReportsRoute,
+  ResultsIdRoute: ResultsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
