@@ -3,9 +3,10 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, FlaskConical, Layers, PlayCircle, Sparkles } from "lucide-react";
 import { useState } from "react";
 
+import { DashboardStats } from "@/components/DashboardStats";
 import { HeroFlow } from "@/components/HeroFlow";
 import { Button } from "@/components/ui/button";
-import { CountUp, Disclaimer, GlassCard, PageShell, PrototypeBadge, SectionHeading } from "@/components/ui-kit";
+import { Disclaimer, GlassCard, PageShell, PrototypeBadge, SectionHeading } from "@/components/ui-kit";
 import { useAuth } from "@/hooks/useAuth";
 import { commoditiesQuery } from "@/lib/data";
 import { DEMO_INPUT } from "@/lib/engine";
@@ -28,17 +29,13 @@ export const Route = createFileRoute("/")({
         content:
           "Analyse a food product and get prototype packaging material recommendations optimised for protection, shelf life, cost and sustainability.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Dashboard,
 });
 
-const KPIS = [
-  { value: 1240, suffix: "+", label: "Products Analysed" },
-  { value: 86, suffix: "", label: "Packaging Materials" },
-  { value: 32, prefix: "18–", suffix: "%", label: "Indicative Shelf-Life Improvement" },
-  { value: 24, suffix: "%", label: "Potential Waste Reduction" },
-];
 
 function Dashboard() {
   const { user } = useAuth();
@@ -113,17 +110,7 @@ function Dashboard() {
         <HeroFlow />
       </section>
 
-      <section className="mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {KPIS.map((kpi, i) => (
-          <GlassCard key={kpi.label} hover delay={i * 0.06} className="p-5">
-            <p className="font-display text-3xl font-semibold tabular-nums">
-              <CountUp value={kpi.value} prefix={kpi.prefix} suffix={kpi.suffix} />
-            </p>
-            <p className="mt-1.5 text-sm text-muted-foreground">{kpi.label}</p>
-          </GlassCard>
-        ))}
-      </section>
-      <p className="mt-3 text-xs text-muted-foreground">Prototype/demo statistics for presentation purposes.</p>
+      <DashboardStats analyses={analyses} signedIn={!!user} />
 
       <section className="mt-14">
         <SectionHeading
