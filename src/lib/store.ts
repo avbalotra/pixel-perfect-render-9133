@@ -1,3 +1,4 @@
+import type { Json } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import type { AnalysisInput, AnalysisResult, StoredAnalysis } from "./types";
 
@@ -43,7 +44,7 @@ export async function saveAnalysis(
       commodity_name: input.commodity,
       commodity_category: input.category,
       storage_type: input.storageType,
-      inputs: input as unknown as Record<string, unknown>,
+      inputs: input as unknown as Json,
     })
     .select("id, created_at")
     .single();
@@ -58,10 +59,10 @@ export async function saveAnalysis(
     shelf_life_min: result.shelfLife.min,
     shelf_life_max: result.shelfLife.max,
     reasons: result.reasons,
-    specifications: result.specifications as unknown as Record<string, unknown>,
-    factors: result.factors,
-    map_conditions: result.mapConditions as unknown as Record<string, unknown>,
-    alternatives: result.alternatives,
+    specifications: result.specifications as unknown as Json,
+    factors: result.factors as unknown as Json,
+    map_conditions: result.mapConditions as unknown as Json,
+    alternatives: result.alternatives as unknown as Json,
   });
   if (recError) throw recError;
 
