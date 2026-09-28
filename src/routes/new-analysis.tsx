@@ -77,10 +77,19 @@ function Pills<T extends string>({ options, value, onChange }: { options: readon
   );
 }
 
-function NumField({ label, value, onChange, step = 1 }: { label: string; value: number; onChange: (n: number) => void; step?: number }) {
+function NumField({ label, value, onChange, step = 1, error, reference }: { label: string; value: number; onChange: (n: number) => void; step?: number; error?: string; reference?: boolean }) {
   return (
     <Field label={label}>
-      <Input type="number" step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <Input
+        type="number"
+        step={step}
+        aria-invalid={!!error}
+        value={Number.isFinite(value) ? value : ""}
+        onChange={(e) => onChange(e.target.value === "" ? NaN : Number(e.target.value))}
+        className={cn(error && "border-destructive")}
+      />
+      {reference && !error && <p className="text-xs text-muted-foreground">Reference Value from commodity library — edit to override.</p>}
+      {error && <p role="alert" className="text-xs text-destructive">{error}</p>}
     </Field>
   );
 }
