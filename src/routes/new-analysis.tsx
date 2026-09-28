@@ -23,6 +23,7 @@ import { readDraft } from "@/lib/store";
 import type { AnalysisInput, StorageType } from "@/lib/types";
 import { useRunAnalysis } from "@/lib/use-run-analysis";
 import { cn } from "@/lib/utils";
+import { STEP_OF, validateInput, type FieldErrors } from "@/lib/validation";
 
 export const Route = createFileRoute("/new-analysis")({
   head: () => ({
@@ -106,11 +107,47 @@ function NewAnalysis() {
     if (d) setForm(d);
   }, []);
 
-  const set = <K extends keyof AnalysisInput>(k: K, v: AnalysisInput[K]) => setForm((f) => ({ ...f, [k]: v }));
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [touched, setTouched] = useState<Set<keyof AnalysisInput>>(new Set());
+  const [refs, setRefs] = useState<Set<keyof AnalysisInput>>(new Set());
+
+  const set = <K extends keyof AnalysisInput>(k: K, v: AnalysisInput[K]) => {
+    setForm((f) => ({ ...f, [k]: v }));
+    setTouched((t) => new Set(t).add(k));
+    setRefs((r) => { const n = new Set(r); n.delete(k); return n; });
+    setErrors((e) => ({ ...e, [k]: undefined }));
+  };
 
   const pickCommodity = (name: string) => {
     const c = commodities.find((x) => x.name === name);
-    setForm(c ? inputFromCommodity(c) : { ...form, commodity: name });
+    setErrors((e) => ({ ...e, commodity: undefined }));
+    if (!c) { setForm((f) => ({ ...f, commodity: name })); return; }
+    const defaults = inputFromCommodity(c);
+    const next: AnalysisInput = { ...defaults };
+    const newRefs = new Set<keyof AnalysisInput>();
+    (Object.keys(defaults) as (keyof AnalysisInput)[]).forEach((k) => {
+      if (k === "commodity") return;
+      if (touched.has(k)) (next as unknown as Record<string, unknown>)[k] = form[k];
+      else newRefs.add(k);
+    });
+    next.commodity = name;
+    setForm(next);
+    setRefs(newRefs);
+  };
+
+  const next = () => {
+    const e = validateInput(form, step);
+    setErrors(e);
+    if (Object.values(e).some(Boolean)) return;
+    setStep((s) => s + 1);
+  };
+
+  const submit = () => {
+    const e = validateInput(form);
+    setErrors(e);
+    const first = (Object.keys(e) as (keyof AnalysisInput)[]).find((k) => e[k]);
+    if (first) { setStep(STEP_OF[first] ?? 0); return; }
+    void analyze(form);
   };
 
   const analyze = async (input: AnalysisInput) => {
