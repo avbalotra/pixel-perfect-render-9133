@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Download, FileSearch, Leaf, Wind } from "lucide-react";
 import { Bar, BarChart, PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
+import { CostCalculator, MapCalculator } from "@/components/Calculators";
 import { Button } from "@/components/ui/button";
 import { Disclaimer, EmptyState, GlassCard, MeterBar, PageShell, PrototypeBadge, ScoreRing, SectionHeading } from "@/components/ui-kit";
 import { useAuth } from "@/hooks/useAuth";
@@ -179,6 +180,11 @@ function Results() {
             <p className="mt-4 text-xs text-muted-foreground">{result.sustainability.note}</p>
           </GlassCard>
         )}
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <MapCalculator commodity={input.commodity} respiration={input.respiration} temperature={input.temperature} shelfLife={input.shelfLifeTarget} />
+        <CostCalculator materialName={result.materialName} thicknessRange={spec.thickness} />
       </div>
 
       <Disclaimer>Prototype decision-support output. Values are indicative and must be validated with packaging suppliers and laboratory shelf-life testing.</Disclaimer>
