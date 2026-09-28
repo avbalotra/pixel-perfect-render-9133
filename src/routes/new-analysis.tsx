@@ -244,7 +244,8 @@ function NewAnalysis() {
             {step === 0 && (
               <>
                 <Field label="Food commodity">
-                  <Input list="commodities" value={form.commodity} placeholder="e.g. Tomato" onChange={(e) => pickCommodity(e.target.value)} />
+                  <Input list="commodities" value={form.commodity} placeholder="e.g. Tomato" onChange={(e) => pickCommodity(e.target.value)} aria-invalid={!!errors.commodity} />
+                  {errors.commodity && <p role="alert" className="text-xs text-destructive">{errors.commodity}</p>}
                   <datalist id="commodities">
                     {commodities.map((c) => <option key={c.id} value={c.name} />)}
                   </datalist>
@@ -274,9 +275,9 @@ function NewAnalysis() {
             )}
             {step === 1 && (
               <>
-                <NumField label="Moisture content (%)" value={form.moisture} onChange={(n) => set("moisture", n)} />
-                <NumField label="Oil / fat content (%)" value={form.oil} onChange={(n) => set("oil", n)} />
-                <NumField label="pH" step={0.1} value={form.ph} onChange={(n) => set("ph", n)} />
+                <NumField label="Moisture content (%)" value={form.moisture} onChange={(n) => set("moisture", n)} error={errors.moisture} reference={refs.has("moisture")} />
+                <NumField label="Oil / fat content (%)" value={form.oil} onChange={(n) => set("oil", n)} error={errors.oil} reference={refs.has("oil")} />
+                <NumField label="pH" step={0.1} value={form.ph} onChange={(n) => set("ph", n)} error={errors.ph} reference={refs.has("ph")} />
                 <div className="sm:col-span-2">
                   <Field label="Respiration rate">
                     <Pills options={RESPIRATION_LEVELS} value={form.respiration} onChange={(v) => set("respiration", v)} />
@@ -313,9 +314,9 @@ function NewAnalysis() {
                     <Pills options={STORAGE} value={form.storageType} onChange={(v) => set("storageType", v)} />
                   </Field>
                 </div>
-                <NumField label="Storage temperature (°C)" value={form.temperature} onChange={(n) => set("temperature", n)} />
-                <NumField label="Relative humidity (%)" value={form.humidity} onChange={(n) => set("humidity", n)} />
-                <NumField label="Required shelf life (days)" value={form.shelfLifeTarget} onChange={(n) => set("shelfLifeTarget", n)} />
+                <NumField label="Storage temperature (°C)" value={form.temperature} onChange={(n) => set("temperature", n)} error={errors.temperature} reference={refs.has("temperature")} />
+                <NumField label="Relative humidity (%)" value={form.humidity} onChange={(n) => set("humidity", n)} error={errors.humidity} reference={refs.has("humidity")} />
+                <NumField label="Required shelf life (days)" value={form.shelfLifeTarget} onChange={(n) => set("shelfLifeTarget", n)} error={errors.shelfLifeTarget} reference={refs.has("shelfLifeTarget")} />
                 <Field label="Light exposure">
                   <Pills options={["Low", "Medium", "High"] as const} value={form.lightExposure} onChange={(v) => set("lightExposure", v)} />
                 </Field>
@@ -328,7 +329,7 @@ function NewAnalysis() {
                     <Pills options={TRANSPORT_MODES} value={form.transportMode} onChange={(v) => set("transportMode", v)} />
                   </Field>
                 </div>
-                <NumField label="Transport duration (hours)" value={form.transportHours} onChange={(n) => set("transportHours", n)} />
+                <NumField label="Transport duration (hours)" value={form.transportHours} onChange={(n) => set("transportHours", n)} error={errors.transportHours} reference={refs.has("transportHours")} />
                 <Field label="Mechanical risk">
                   <Pills options={["Low", "Medium", "High"] as const} value={form.mechanicalRisk} onChange={(v) => set("mechanicalRisk", v)} />
                 </Field>
@@ -351,11 +352,11 @@ function NewAnalysis() {
             <ArrowLeft className="size-4" /> Back
           </Button>
           {step < STEPS.length - 1 ? (
-            <Button onClick={() => setStep((s) => s + 1)}>
+            <Button onClick={next}>
               Next <ArrowRight className="size-4" />
             </Button>
           ) : (
-            <Button disabled={!form.commodity.trim()} onClick={() => void analyze(form)}>
+            <Button onClick={submit}>
               <Sparkles className="size-4" /> Analyze packaging
             </Button>
           )}
