@@ -78,7 +78,7 @@ function Pills<T extends string>({ options, value, onChange }: { options: readon
   );
 }
 
-function NumField({ label, value, onChange, step = 1, error, reference }: { label: string; value: number; onChange: (n: number) => void; step?: number; error?: string; reference?: boolean }) {
+function NumField({ label, value, onChange, step = 1, error, reference }: { label: string; value: number; onChange: (n: number) => void; step?: number; error?: string | undefined; reference?: boolean }) {
   return (
     <Field label={label}>
       <Input
