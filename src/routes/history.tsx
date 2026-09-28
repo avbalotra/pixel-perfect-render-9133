@@ -1,12 +1,12 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { History as HistoryIcon, Trash2 } from "lucide-react";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Copy, History as HistoryIcon, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { EmptyState, GlassCard, PageShell, SectionHeading } from "@/components/ui-kit";
 import { useAuth } from "@/hooks/useAuth";
-import { deleteAnalysis, listAnalyses } from "@/lib/store";
+import { deleteAnalysis, listAnalyses, stashDraft } from "@/lib/store";
 
 export const Route = createFileRoute("/history")({
   head: () => ({
@@ -25,6 +25,7 @@ export const Route = createFileRoute("/history")({
 function History() {
   const { user, loading } = useAuth();
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const { data = [], isLoading } = useQuery({
     queryKey: ["analyses", user?.id ?? null],
     queryFn: () => listAnalyses(user?.id ?? null),
@@ -58,6 +59,7 @@ function History() {
                   <p className="text-sm text-muted-foreground">{a.result?.materialName} · {new Date(a.createdAt).toLocaleDateString()}</p>
                 </Link>
                 <span className="font-semibold text-primary tabular-nums">{a.result?.compatibility}%</span>
+                <Button variant="ghost" size="icon" aria-label="Duplicate analysis" title="Duplicate" onClick={() => { if (a.input) { stashDraft(a.input); void navigate({ to: "/new-analysis" }); } }}><Copy className="size-4" /></Button>
                 <Button variant="ghost" size="icon" aria-label="Delete analysis" onClick={() => void remove(a.id)}><Trash2 className="size-4" /></Button>
               </GlassCard>
             ))}

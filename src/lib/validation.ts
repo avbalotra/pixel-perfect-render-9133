@@ -7,7 +7,7 @@ export const TEMP_RANGES: Record<StorageType, [number, number]> = {
   Frozen: [-40, -12],
 };
 
-export type FieldErrors = Partial<Record<keyof AnalysisInput, string>>;
+export type FieldErrors = Partial<Record<keyof AnalysisInput, string | undefined>>;
 
 const num = (v: unknown) => typeof v === "number" && Number.isFinite(v);
 
