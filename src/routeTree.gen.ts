@@ -16,6 +16,7 @@ import { Route as MaterialsRouteImport } from './routes/materials'
 import { Route as NewAnalysisRouteImport } from './routes/new-analysis'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as ApiAiAdviceRouteImport } from './routes/api/ai-advice'
 import { Route as ResultsIdRouteImport } from './routes/results.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +54,11 @@ const ReportsRoute = ReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAiAdviceRoute = ApiAiAdviceRouteImport.update({
+  id: '/api/ai-advice',
+  path: '/api/ai-advice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResultsIdRoute = ResultsIdRouteImport.update({
   id: '/results/$id',
   path: '/results/$id',
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/new-analysis': typeof NewAnalysisRoute
   '/profile': typeof ProfileRoute
   '/reports': typeof ReportsRoute
+  '/api/ai-advice': typeof ApiAiAdviceRoute
   '/results/$id': typeof ResultsIdRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/new-analysis': typeof NewAnalysisRoute
   '/profile': typeof ProfileRoute
   '/reports': typeof ReportsRoute
+  '/api/ai-advice': typeof ApiAiAdviceRoute
   '/results/$id': typeof ResultsIdRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/new-analysis': typeof NewAnalysisRoute
   '/profile': typeof ProfileRoute
   '/reports': typeof ReportsRoute
+  '/api/ai-advice': typeof ApiAiAdviceRoute
   '/results/$id': typeof ResultsIdRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/new-analysis'
     | '/profile'
     | '/reports'
+    | '/api/ai-advice'
     | '/results/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/new-analysis'
     | '/profile'
     | '/reports'
+    | '/api/ai-advice'
     | '/results/$id'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/new-analysis'
     | '/profile'
     | '/reports'
+    | '/api/ai-advice'
     | '/results/$id'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   NewAnalysisRoute: typeof NewAnalysisRoute
   ProfileRoute: typeof ProfileRoute
   ReportsRoute: typeof ReportsRoute
+  ApiAiAdviceRoute: typeof ApiAiAdviceRoute
   ResultsIdRoute: typeof ResultsIdRoute
 }
 
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai-advice': {
+      id: '/api/ai-advice'
+      path: '/api/ai-advice'
+      fullPath: '/api/ai-advice'
+      preLoaderRoute: typeof ApiAiAdviceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/results/$id': {
       id: '/results/$id'
       path: '/results/$id'
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewAnalysisRoute: NewAnalysisRoute,
   ProfileRoute: ProfileRoute,
   ReportsRoute: ReportsRoute,
+  ApiAiAdviceRoute: ApiAiAdviceRoute,
   ResultsIdRoute: ResultsIdRoute,
 }
 export const routeTree = rootRouteImport
