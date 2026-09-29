@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, Download, FileSearch, Leaf, Wind } from "lucide-react";
+import { CheckCircle2, Download, FileSearch, FileText, Leaf, Wind } from "lucide-react";
 import { Bar, BarChart, PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
+import { AiAdvisor } from "@/components/AiAdvisor";
 import { CostCalculator, MapCalculator } from "@/components/Calculators";
 import { Button } from "@/components/ui/button";
 import { Disclaimer, EmptyState, GlassCard, MeterBar, PageShell, PrototypeBadge, ScoreRing, SectionHeading } from "@/components/ui-kit";
 import { useAuth } from "@/hooks/useAuth";
+import { downloadPdfReport } from "@/lib/pdf-report";
 import { downloadReport } from "@/lib/report";
 import { getAnalysis, readCachedResult } from "@/lib/store";
 
@@ -67,7 +69,12 @@ function Results() {
       <SectionHeading
         eyebrow={`${input.commodity} · ${input.storageType} · ${input.temperature}°C`}
         title="Packaging recommendation"
-        action={<Button variant="outline" onClick={() => downloadReport(data)}><Download className="size-4" /> Download report</Button>}
+        action={
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => downloadReport(data)}><Download className="size-4" /> HTML report</Button>
+            <Button onClick={() => downloadPdfReport(data)}><FileText className="size-4" /> Download PDF</Button>
+          </div>
+        }
       />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
@@ -173,8 +180,8 @@ function Results() {
           <GlassCard className="p-6">
             <h3 className="flex items-center gap-2 font-semibold"><Leaf className="size-4 text-primary" /> Sustainability</h3>
             <div className="mt-4 space-y-3">
-              <MeterBar label="Recyclability" value={result.sustainability.recyclability} />
-              <MeterBar label="End of life" value={result.sustainability.endOfLife} />
+              <MeterBar label="Recyclability" value={result.sustainability.recyclability * 20} />
+              <MeterBar label="End of life" value={result.sustainability.endOfLife * 20} />
               <MeterBar label="Overall" value={result.sustainability.overall} />
             </div>
             <p className="mt-4 text-xs text-muted-foreground">{result.sustainability.note}</p>
@@ -185,6 +192,21 @@ function Results() {
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <MapCalculator commodity={input.commodity} respiration={input.respiration} temperature={input.temperature} shelfLife={input.shelfLifeTarget} />
         <CostCalculator materialName={result.materialName} thicknessRange={spec.thickness} />
+      </div>
+
+      <div className="mt-6">
+        <AiAdvisor
+          key={id}
+          commodity={input.commodity}
+          storage={`${input.storageType} storage at ${input.temperature}°C, ${input.humidity}% RH; target shelf life ${input.shelfLifeTarget} days.`}
+          results={[
+            `Recommended: ${result.materialName} (${result.compatibility}% compatibility)`,
+            `Indicative shelf life: ${result.shelfLife.min}-${result.shelfLife.max} days`,
+            `Specs: OTR ${spec.otr}; WVTR ${spec.wvtr}; thickness ${spec.thickness}; MAP ${spec.map}`,
+            `Alternatives: ${result.alternatives.map((a) => `${a.name} (${a.compatibility}%)`).join(", ")}`,
+            ...result.reasons.slice(0, 4),
+          ].join("\n").slice(0, 4000)}
+        />
       </div>
 
       <Disclaimer>Prototype decision-support output. Values are indicative and must be validated with packaging suppliers and laboratory shelf-life testing.</Disclaimer>
