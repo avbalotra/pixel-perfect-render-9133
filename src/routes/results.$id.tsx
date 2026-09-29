@@ -180,8 +180,8 @@ function Results() {
           <GlassCard className="p-6">
             <h3 className="flex items-center gap-2 font-semibold"><Leaf className="size-4 text-primary" /> Sustainability</h3>
             <div className="mt-4 space-y-3">
-              <MeterBar label="Recyclability" value={result.sustainability.recyclability} />
-              <MeterBar label="End of life" value={result.sustainability.endOfLife} />
+              <MeterBar label="Recyclability" value={result.sustainability.recyclability * 20} />
+              <MeterBar label="End of life" value={result.sustainability.endOfLife * 20} />
               <MeterBar label="Overall" value={result.sustainability.overall} />
             </div>
             <p className="mt-4 text-xs text-muted-foreground">{result.sustainability.note}</p>
